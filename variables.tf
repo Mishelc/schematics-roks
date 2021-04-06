@@ -6,7 +6,7 @@ variable "ibmcloud_region" {
 # VPC Variables
 ##############################################################################
 variable "vpc_name" {
-  default = "vpc-demo-3"
+  default = "vpc-roks"
   description = "Name of your VPC"
 }
 
@@ -46,7 +46,7 @@ variable "zone3_cidr" {
 
 variable "cluster_name" {
   description = "name for the iks cluster"
-  default     = "roks-on-vpc-cluter"
+  default     = "aligner-roks-cluter"
 }
 
 variable "machine_type" {
