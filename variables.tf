@@ -60,7 +60,7 @@ variable "zone3_subnet" {
 ##############################################################################
 
 variable "cluster_name" {
-  description = "name for the iks cluster"
+  description = "name for the roks cluster"
   default     = "alignet-roks-cluster"
 }
 
