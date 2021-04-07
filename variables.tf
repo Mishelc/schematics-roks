@@ -40,13 +40,28 @@ variable "zone3_cidr" {
   description = "CIDR block to be used for zone 3"
 }
 
+variable "zone1_subnet" {
+  default = "vpc-roks-dal1"
+  description = "subnet name for zone 1"
+}
+
+variable "zone2_subnet" {
+  default = "vpc-roks-dal2"
+  description = "subnet name for zone 2"
+}
+
+variable "zone3_subnet" {
+  default = "vpc-roks-dal3"
+  description = "subnet name for zone 3"
+}
+
 ##############################################################################
 # Cluster Variables
 ##############################################################################
 
 variable "cluster_name" {
   description = "name for the iks cluster"
-  default     = "aligner-roks-cluter"
+  default     = "alignet-roks-cluter"
 }
 
 variable "machine_type" {

@@ -24,31 +24,55 @@ resource "ibm_is_vpc_address_prefix" "vpc-ap3" {
   cidr = "${var.zone3_cidr}"
 }
 
+# Public Gateways
+
+resource "ibm_is_public_gateway" "gateway1" {
+    name = "gateway1"
+    vpc = "${ibm_is_vpc.vpc.id}"
+    zone = "${var.zone1}"
+}
+
+resource "ibm_is_public_gateway" "gateway2" {
+    name = "gateway2"
+    vpc = "${ibm_is_vpc.vpc.id}"
+    zone = "${var.zone2}"
+}
+
+resource "ibm_is_public_gateway" "gateway3" {
+    name = "gateway3"
+    vpc = "${ibm_is_vpc.vpc.id}"
+    zone = "${var.zone3}"
+}
+
 # Subnets 
 resource "ibm_is_subnet" "node1" {
-  name            = "node1"
+  name            = "${var.zone1_subnet}"
   vpc             = "${ibm_is_vpc.vpc.id}"
   zone            = "${var.zone1}"
   ipv4_cidr_block = "${var.zone1_cidr}"
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap1"]
+  public_gateway  = "${ibm_is_public_gateway.gateway1.id}"
 }
 
 resource "ibm_is_subnet" "node2" {
-  name            = "node2"
+  name            = "${var.zone2_subnet}"
   vpc             = "${ibm_is_vpc.vpc.id}"
   zone            = "${var.zone2}"
   ipv4_cidr_block = "${var.zone2_cidr}"
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap2"]
+  public_gateway  = "${ibm_is_public_gateway.gateway2.id}"
 }
 
 resource "ibm_is_subnet" "node3" {
-  name            = "node3"
+  name            = "${var.zone3_subnet}"
   vpc             = "${ibm_is_vpc.vpc.id}"
   zone            = "${var.zone3}"
   ipv4_cidr_block = "${var.zone3_cidr}"
   depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap3"]
+  public_gateway  = "${ibm_is_public_gateway.gateway3.id}"
 }
 
+# Security Group Rules
 
 resource "ibm_is_security_group_rule" "sg1_tcp_rule" {
   # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
@@ -71,11 +95,12 @@ resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
     port_max = "80"
   }
 }
+
 ##############################################################################
 # Create Object Storage
 ##############################################################################
 resource "ibm_resource_instance" "cos_instance" {
-  name     = "cos_instance"
+  name     = "cos_roks_instance"
   service  = "cloud-object-storage"
   plan     = "standard"
   location = "global"
@@ -86,7 +111,7 @@ resource "ibm_resource_instance" "cos_instance" {
 ##############################################################################
 
 
-resource "ibm_container_vpc_cluster" "cluster-iks-demo" {
+resource "ibm_container_vpc_cluster" "cluster-roks" {
   depends_on         = ["ibm_is_subnet.node1", "ibm_is_subnet.node2", "ibm_is_subnet.node3"]
   name               = "${var.cluster_name}"
   vpc_id             = "${ibm_is_vpc.vpc.id}"
