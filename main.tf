@@ -92,7 +92,7 @@ resource "ibm_resource_instance" "cos_instance" {
 
 
 resource "ibm_container_vpc_cluster" "cluster-roks" {
-  depends_on         = ["ibm_is_subnet.node1", "ibm_is_subnet.node2", "ibm_is_subnet.node3"]
+  depends_on         = ["ibm_is_subnet.node1", "ibm_is_subnet.node2"]
   name               = "${var.cluster_name}"
   vpc_id             = "${ibm_is_vpc.vpc.id}"
   kube_version       = "${var.kube_version}"
