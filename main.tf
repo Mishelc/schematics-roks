@@ -17,13 +17,6 @@ resource "ibm_is_vpc_address_prefix" "vpc-ap2" {
   cidr = "${var.zone2_cidr}"
 }
 
-resource "ibm_is_vpc_address_prefix" "vpc-ap3" {
-  name = "vpc-ap3"
-  zone = "${var.zone3}"
-  vpc  = "${ibm_is_vpc.vpc.id}"
-  cidr = "${var.zone3_cidr}"
-}
-
 # Public Gateways
 
 resource "ibm_is_public_gateway" "gateway1" {
@@ -36,12 +29,6 @@ resource "ibm_is_public_gateway" "gateway2" {
     name = "gateway2"
     vpc = "${ibm_is_vpc.vpc.id}"
     zone = "${var.zone2}"
-}
-
-resource "ibm_is_public_gateway" "gateway3" {
-    name = "gateway3"
-    vpc = "${ibm_is_vpc.vpc.id}"
-    zone = "${var.zone3}"
 }
 
 # Subnets 
@@ -63,14 +50,7 @@ resource "ibm_is_subnet" "node2" {
   public_gateway  = "${ibm_is_public_gateway.gateway2.id}"
 }
 
-resource "ibm_is_subnet" "node3" {
-  name            = "${var.zone3_subnet}"
-  vpc             = "${ibm_is_vpc.vpc.id}"
-  zone            = "${var.zone3}"
-  ipv4_cidr_block = "${var.zone3_cidr}"
-  depends_on      = ["ibm_is_vpc_address_prefix.vpc-ap3"]
-  public_gateway  = "${ibm_is_public_gateway.gateway3.id}"
-}
+
 
 # Security Group Rules
 
@@ -128,10 +108,6 @@ resource "ibm_container_vpc_cluster" "cluster-roks" {
     {
       subnet_id = "${ibm_is_subnet.node2.id}"
       name      = "${var.zone2}"
-    },
-    {
-      subnet_id = "${ibm_is_subnet.node3.id}"
-      name      = "${var.zone3}"
     }
   ]
   disable_public_service_endpoint = "${var.disable_pse}"
