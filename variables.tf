@@ -61,7 +61,7 @@ variable "zone3_subnet" {
 
 variable "cluster_name" {
   description = "name for the roks cluster"
-  default     = "alignet-roks-cluster"
+  default     = "roks-cluster-demo"
 }
 
 variable "machine_type" {

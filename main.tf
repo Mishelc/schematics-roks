@@ -55,7 +55,6 @@ resource "ibm_is_subnet" "node2" {
 # Security Group Rules
 
 resource "ibm_is_security_group_rule" "sg1_tcp_rule" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
   group     = "${ibm_is_vpc.vpc.default_security_group}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
@@ -66,7 +65,6 @@ resource "ibm_is_security_group_rule" "sg1_tcp_rule" {
 }
 
 resource "ibm_is_security_group_rule" "sg1_tcp_rule_80" {
-  # depends_on = ["ibm_is_floating_ip.floatingip1", "ibm_is_floating_ip.floatingip2"]
   group     = "${ibm_is_vpc.vpc.default_security_group}"
   direction = "inbound"
   remote    = "0.0.0.0/0"
@@ -99,7 +97,6 @@ resource "ibm_container_vpc_cluster" "cluster-roks" {
   flavor             = "${var.machine_type}"
   worker_count       = "${var.worker_count}"
   cos_instance_crn   = "${ibm_resource_instance.cos_instance.id}"
-  # resource_group_id  = "${data.ibm_resource_group.resource_group.id}"
   zones = [
     {
       subnet_id = "${ibm_is_subnet.node1.id}"
