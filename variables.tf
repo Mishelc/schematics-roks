@@ -6,7 +6,7 @@ variable "ibmcloud_region" {
 # VPC Variables
 ##############################################################################
 variable "vpc_name" {
-  default = "vpc-roks"
+  default = "vpc-demo"
   description = "Name of your VPC"
 }
 
