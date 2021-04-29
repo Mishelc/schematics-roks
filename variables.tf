@@ -70,7 +70,7 @@ variable "machine_type" {
 }
 
 variable "kube_version" {
-  default = "4.5.35_openshift"
+  default = "4.6.23_openshift"
 }
 
 variable "worker_count" {
